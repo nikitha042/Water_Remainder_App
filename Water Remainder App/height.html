@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Height</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Enter Your Height</h1>
+
+<input type="number" id="height" placeholder="Height in cm">
+
+<br><br>
+
+<button onclick="saveHeight()">
+Next
+</button>
+
+<script>
+
+function saveHeight(){
+
+    let height =
+    document.getElementById("height").value;
+
+    localStorage.setItem(
+        "height",
+        height
+    );
+
+    location.href = "wakeup.html";
+}
+
+</script>
+
+</body>
+</html>

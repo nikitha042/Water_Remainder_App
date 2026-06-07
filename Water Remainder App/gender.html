@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gender Selection</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Select Gender</h1>
+
+<button onclick="selectGender('Male')">
+Male
+</button>
+
+<button onclick="selectGender('Female')">
+Female
+</button>
+
+<script>
+
+function selectGender(gender){
+
+    localStorage.setItem(
+        "gender",
+        gender
+    );
+
+    location.href = "weight.html";
+}
+
+</script>
+
+</body>
+</html>

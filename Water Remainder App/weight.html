@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weight</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Enter Your Weight</h1>
+
+<input type="number" id="weight" placeholder="Weight in KG">
+
+<br><br>
+
+<button onclick="saveWeight()">
+Next
+</button>
+
+<script>
+
+function saveWeight(){
+
+    let weight =
+    document.getElementById("weight").value;
+
+    localStorage.setItem(
+        "weight",
+        weight
+    );
+
+    location.href = "height.html";
+}
+
+</script>
+
+</body>
+</html>

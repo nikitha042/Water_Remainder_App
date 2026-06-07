@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sleep Time</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Select Sleep Time</h1>
+
+<input type="time" id="sleepTime">
+
+<br><br>
+
+<button onclick="saveSleepTime()">
+Finish
+</button>
+
+<script>
+
+function saveSleepTime(){
+
+    let sleepTime =
+    document.getElementById("sleepTime").value;
+
+    localStorage.setItem(
+        "sleepTime",
+        sleepTime
+    );
+
+    location.href = "dashboard.html";
+}
+
+</script>
+
+</body>
+</html>

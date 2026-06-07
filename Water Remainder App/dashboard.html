@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Reminder App - Dashboard</title><link rel="stylesheet" href="css/style.css">
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right,#00b4db,#0083b0);
+        margin:0;
+        padding:20px;
+    }
+
+    .container{
+        max-width:700px;
+        margin:auto;
+        background:white;
+        padding:20px;
+        border-radius:20px;
+        text-align:center;
+        box-shadow:0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .info-card{
+        background:#f5f9ff;
+        margin:10px 0;
+        padding:10px;
+        border-radius:10px;
+    }
+
+    button{
+        width:90%;
+        padding:15px;
+        margin:10px;
+        border:none;
+        border-radius:10px;
+        background:#0099ff;
+        color:white;
+        font-size:18px;
+        cursor:pointer;
+    }
+
+    button:hover{
+        background:#0077cc;
+    }
+
+    #historyList{
+        list-style:none;
+        padding:0;
+    }
+
+    #historyList li{
+        background:#eaf6ff;
+        margin:5px;
+        padding:10px;
+        border-radius:8px;
+    }
+</style>
+
+</head><body><div class="container">
+
+<h1>💧 Water Reminder App</h1>
+<h1 id="welcome"></h1>
+
+<p>Stay Hydrated, Stay Healthy 💧</p>
+
+<div class="info-card">
+    <h2 id="goal"></h2>
+</div>
+
+<div class="info-card">
+    <h2 id="bmi"></h2>
+</div>
+
+<div class="info-card">
+    <h2 id="wake"></h2>
+</div>
+
+<div class="info-card">
+    <h2 id="sleep"></h2>
+</div>
+
+<h2 id="progress"></h2>
+
+
+
+<br><br>
+
+<div style="width:100%;height:25px;background:#ddd;border-radius:20px;">
+    <div id="bar"
+         style="width:0%;height:100%;background:deepskyblue;border-radius:20px;">
+    </div>
+</div>
+
+<br>
+
+<button onclick="drink(250)">💧 250 ml</button>
+
+<button onclick="drink(500)">💧 500 ml</button>
+
+<button onclick="drink(1000)">💧 1000 ml</button>
+
+<button onclick="enableNotifications()">
+    🔔 Enable Reminders
+</button>
+
+<button onclick="resetData()">
+    🔄 Reset Today
+</button>
+
+<h2>Today's History</h2>
+
+<ul id="historyList"></ul>
+
+</div><script>
+
+let name = localStorage.getItem("name") || "User";
+
+let weight =
+Number(localStorage.getItem("weight")) || 60;
+
+let height =
+Number(localStorage.getItem("height")) || 170;
+
+let wakeTime =
+localStorage.getItem("wakeTime") || "--:--";
+
+let sleepTime =
+localStorage.getItem("sleepTime") || "--:--";
+
+let bmi =
+weight / ((height/100)*(height/100));
+
+let target = weight * 35;
+
+let consumed =
+Number(localStorage.getItem("consumed")) || 0;
+
+document.getElementById("welcome").innerHTML =
+"Welcome " + name;
+
+document.getElementById("goal").innerHTML =
+"Daily Goal: " + target + " ml";
+
+document.getElementById("bmi").innerHTML =
+"BMI: " + bmi.toFixed(1);
+
+document.getElementById("wake").innerHTML =
+"Wake Up Time: " + wakeTime;
+
+document.getElementById("sleep").innerHTML =
+"Sleep Time: " + sleepTime;
+
+update();
+
+function drink(amount){
+
+    consumed += amount;
+
+    localStorage.setItem(
+        "consumed",
+        consumed
+    );
+
+    let history =
+    JSON.parse(
+        localStorage.getItem("history")
+    ) || [];
+
+    history.push(
+        amount + " ml - " +
+        new Date().toLocaleTimeString()
+    );
+
+    localStorage.setItem(
+        "history",
+        JSON.stringify(history)
+    );
+
+    update();
+}
+
+function showHistory(){
+
+    let history =
+    JSON.parse(
+        localStorage.getItem("history")
+    ) || [];
+
+    let list =
+    document.getElementById("historyList");
+
+    list.innerHTML = "";
+
+    history.forEach(item => {
+
+        let li =
+        document.createElement("li");
+
+        li.innerHTML = item;
+
+        list.appendChild(li);
+
+    });
+}
+
+function update(){
+
+    document.getElementById("progress").innerHTML =
+    consumed + " / " + target + " ml";
+
+    let percent =
+    Math.min((consumed/target)*100,100);
+
+    document.getElementById("bar").style.width =
+    percent + "%";
+
+    showHistory();
+
+    if(consumed >= target){
+
+        document.getElementById("progress").innerHTML =
+        "🎉 Goal Achieved! " +
+        consumed + " / " + target + " ml";
+    }
+}
+
+function resetData(){
+
+    consumed = 0;
+
+    localStorage.setItem(
+        "consumed",
+        0
+    );
+
+    localStorage.removeItem(
+        "history"
+    );
+
+    update();
+}
+
+function enableNotifications(){
+
+    if("Notification" in window){
+
+        Notification.requestPermission()
+        .then(permission => {
+
+            if(permission === "granted"){
+
+                alert(
+                    "Water reminders enabled!"
+                );
+
+                startReminders();
+            }
+        });
+    }
+}
+
+function startReminders(){
+
+    setInterval(() => {
+
+        new Notification(
+            "💧 Time to Drink Water!",
+            {
+                body:
+                "Stay hydrated and reach your goal."
+            }
+        );
+
+    }, 60 * 60 * 1000);
+}
+
+</script></body>
+</html>

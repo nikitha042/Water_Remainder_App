@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wake Up Time</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Select Wake Up Time</h1>
+
+<input type="time" id="wakeTime">
+
+<br><br>
+
+<button onclick="saveWakeTime()">
+Next
+</button>
+
+<script>
+
+function saveWakeTime(){
+
+    let wakeTime =
+    document.getElementById("wakeTime").value;
+
+    localStorage.setItem(
+        "wakeTime",
+        wakeTime
+    );
+
+    location.href = "sleep.html";
+}
+
+</script>
+
+</body>
+</html>
